@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const app = express();
 
@@ -76,9 +76,8 @@ app.post('/color', async(req, res) => {
 
 app.put('/color', async(req, res) => {
 	const { body } = req;
-
-	const { hex, name: colorName } = body;
-
+	const { id, hex, name: colorName } = body;
+	const mongoId = new ObjectId(id);
 
 	const uri = process.env.MONGODB_URI;
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -90,11 +89,11 @@ app.put('/color', async(req, res) => {
 			const collection = client.db("moduscreate").collection("moduscreate");
 			const newColor = { hex: hex.toUpperCase(), name: colorName.toLowerCase() };
 
-			const foundColor = await collection.findOne({ name: colorName.toLowerCase() });
+			const foundColor = await collection.findOne({ _id: mongoId });
 
 			if (foundColor) {			
 				// update color
-				const q = { name: colorName.toLowerCase() };
+				const q = { _id: mongoId };
 				const updatedDocument = { $set: { name: colorName.toLowerCase(), hex: hex.toUpperCase() }};
 
 				collection.updateOne(q, updatedDocument, (collectionError, collectionRes) => {
@@ -123,9 +122,8 @@ app.put('/color', async(req, res) => {
 
 app.delete('/color', async(req, res) => {
 	const { body } = req;
-
-	const { name: colorName } = body;
-
+	const { id } = body;
+	const mongoId = new ObjectId(id);
 
 	const uri = process.env.MONGODB_URI;
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -136,11 +134,11 @@ app.delete('/color', async(req, res) => {
 
 			const collection = client.db("moduscreate").collection("moduscreate");
 
-			const foundColor = await collection.findOne({ name: colorName.toLowerCase() });
+			const foundColor = await collection.findOne({ _id: mongoId });
 
 			if (foundColor) {			
 				// delete color
-				const q = { name: colorName.toLowerCase() };
+				const q = { _id: mongoId };
 
 				collection.deleteOne(q, (collectionError, collectionRes) => {
 					if (collectionError) {
