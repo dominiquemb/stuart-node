@@ -1,5 +1,5 @@
 {
-  "name": "frontify-node",
+  "name": "stuart-node",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "node": "12.13.0"
   },
   "scripts": {
-    "dev": "node -r dotenv/config server.js",
+    "start": "node -r dotenv/config server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
@@ -21,7 +21,9 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "hash-wasm": "^4.9.0",
+    "mocha": "^2.5.3",
     "mongodb": "^4.1.3",
+    "supertest": "^6.1.6",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4"
   }
