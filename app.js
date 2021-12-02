@@ -40,8 +40,6 @@ app.get('/couriers/lookup', async(req, res) => {
 	const { body } = req;
 	const { capacity_required, testing_timeout } = body;
 
-	const currentTimestamp = new Date().getTime();
-
 	try {
 		if (!requestedCapacities[capacity_required]) {
 			requestedCapacities[capacity_required] = {
@@ -137,7 +135,7 @@ app.put('/couriers/update', async(req, res) => {
 								max_capacity: max_capacity
 							});
 						}
-					}				
+					}				https://github.com/dominiquemb/stuart-node
 
 					res.json({'data': collectionRes, 'error': false});
 				})
